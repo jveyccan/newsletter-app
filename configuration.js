@@ -5,7 +5,7 @@ module.exports = {
     PROTOCOL:'http',
     publicPath:'public/profileImages',
      
-    amqp: "amqps://puersguj:tuD6Cdwxph1yvZfjCsRF47opZiMq-Yx2@snake.rmq2.cloudamqp.com/puersguj",
+    amqp: "amqps://puersguj***@snake.rmq2.cloudamqp.com/puersguj",
     queue: "nodemailer-amqp",
 
 
