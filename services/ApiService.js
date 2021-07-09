@@ -3,9 +3,8 @@ const BaseService = require('../services/BaseService');
 const UserModel = require("../models/User")
 const csvd = require('csvtojson');
 const formidable = require('formidable');
-
 const { ResourceNotFound } = require('../errors');
-
+const publisher = require("../publisher");
 /**
  * @typedef {import('mongoose').Document} MongooseDocument
  * @typedef {import('mongoose').Types.ObjectId} ObjectId
@@ -18,7 +17,7 @@ class ApiService extends BaseService {
    * @returns {Promise<Array<MongooseDocument>>} inserted users
    */
   async sendEmail(req) {
-    const form = new formidable.IncomingForm();
+    const form = formidable({ multiples: true });
     try{
     form.parse(req, async function (err, fields, files) {
       console.log(err);
@@ -34,13 +33,11 @@ class ApiService extends BaseService {
               })
           var allUsersData = await UserModel.find({}).exec();
           var allUsers = {}
-          for (a in allUsersData) {
+          for ( var a in allUsersData) {
             allUsers[allUsersData[a].email.toLowerCase()] = allUsersData[a]
           }
          
-          for (let row of iteratedList) {
-                  console.log(row);
-          }
+              publisher.sendrmq(iteratedList, allUsers)
             
       };
 
